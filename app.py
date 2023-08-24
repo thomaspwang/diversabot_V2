@@ -33,8 +33,10 @@ from urllib.parse import urlparse
 from models import DiversaSpot
 from blocks import (
     leaderboard_blocks,
-    diversabot_rules,
-    stat_blocks
+    rule_blocks,
+    stat_blocks,
+    help_blocks,
+    miss_blocks
 )
 from utils import (
     find_all_mentions, 
@@ -147,25 +149,6 @@ def record_spot(message, client, logger):
         text=reply
     )
 
-@app.message("diversabot leaderboard")
-def post_leaderboard(message, client):
-    """ Outputs leaderboard for the current semester."""
-    channel_id = message["channel"]
-
-    message_text = ""
-    for rank, user_id, num_spots in iter_leaderboard(engine, limit=10):
-        name = get_name_from_user_id(user_id, app)
-        message_text += f"*#{rank}: {name}* with {num_spots} spots \n"
-
-    blocks = leaderboard_blocks(date.today(), message_text, CURRENT_SEMESTER)
-
-    client.chat_postMessage(
-        channel=channel_id,
-        blocks=blocks,
-        text="Displaying leaderboard information."
-
-    )
-
 @app.message("diversabot flag")
 def flag_spot(message, client, logger):
     flagger = message['user']
@@ -210,15 +193,74 @@ def flag_spot(message, client, logger):
         text=reply
     )
 
-@app.message("diversabot rules")
-def post_rules(message, client):
-    """"""
+@app.message("diversabot leaderboard")
+def post_leaderboard(message, client):
+    """ Outputs leaderboard for the current semester."""
     channel_id = message["channel"]
-    blocks = diversabot_rules()
+
+    message_text = ""
+    for rank, user_id, num_spots in iter_leaderboard(engine, limit=10):
+        name = get_name_from_user_id(user_id, app)
+        message_text += f"*#{rank}: {name}* with {num_spots} spots \n"
+
+    blocks = leaderboard_blocks(date.today(), message_text, CURRENT_SEMESTER)
+
     client.chat_postMessage(
         channel=channel_id,
-        blocks=blocks
+        blocks=blocks,
+        text="Displaying leaderboard information."
+
     )
+
+@app.message("diversabot miss")
+def post_miss(message, client):
+    user_id = message["user"]
+    channel_id = message["channel"]
+    message_ts = message["ts"]
+    tagged_users: list[str] = find_all_mentions(message["text"])
+
+    if len(tagged_users) == 0:
+        message_text = "Please tag someone to use this command!"
+        client.chat_postMessage(
+            channel=channel_id,
+            thread_ts=message_ts,
+            text=message_text
+        )
+        return
+    
+    elif len(tagged_users) > 1:
+        message_text = "Please tag only one person to use this command!"
+        client.chat_postMessage(
+            channel=channel_id,
+            thread_ts=message_ts,
+            text=message_text
+        )
+        return
+    
+    tagged_user = tagged_users[0]
+    random_image_url: str
+
+    if get_num_spots_for_user_id(tagged_user, engine) == 0:
+        random_image_url ="Too bad ... they're too elusive and haven't been spotted yet :("
+
+    with Session(engine) as session:
+        # Queries a random image_url from the DB that has not been flagged and has the tagged user in it.
+        random_image_url = session.query(DiversaSpot) \
+                   .filter(DiversaSpot.tagged.any(user_id)) \
+                   .filter(DiversaSpot.flagged == False) \
+                   .order_by(sqlalchemy.func.random()) \
+                   .first() \
+                   .image_url
+
+    message_text = f"Aww ... you miss {get_name_from_user_id(tagged_user, app)}? :pleading_face::point_right::point_left:"
+
+    blocks = miss_blocks(message_text, random_image_url)
+
+    client.chat_postMessage(
+            channel=channel_id,
+            blocks=blocks,
+            text="Displaying miss information."
+        )
 
 @app.message("diversabot stats")
 def post_stats(message, client):
@@ -259,15 +301,30 @@ def post_stats(message, client):
     client.chat_postMessage(
         channel=channel_id,
         blocks=blocks,
-        text="Posting personal stat information."
+        text="Displaying personal stat information."
     )
 
-# TODO: diversabot team leaderboard
-# TODO: diversabot miss
-# TODO: diversabot help (can copy and paste technically)
-# TODO: diversabot recap (automatic and not an action) — recap with who spotted the most that week, who was the most spotted, and like 3-5 pics of most reacted to spots (need to implement a count reacts)
-# TODO: diversabot unflag (only allowed by me or tommy)
-# TODO: diversabot chum - for the chumming channel to count into diversaspots?
+@app.message("diversabot help")
+def post_help(message, client):
+    """Post help commands"""
+    channel_id = message["channel"]
+    blocks = help_blocks()
+    client.chat_postMessage(
+        channel=channel_id,
+        blocks=blocks,
+        text="Displaying help information."
+    )
+
+@app.message("diversabot rules")
+def post_rules(message, client):
+    """Post rules"""
+    channel_id = message["channel"]
+    blocks = rule_blocks()
+    client.chat_postMessage(
+        channel=channel_id,
+        blocks=blocks,
+        text="Displaying rules information."
+    )
 
 
 if __name__ == "__main__":

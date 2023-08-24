@@ -3,6 +3,105 @@ Slack block templates for output UI.
 """
 from datetime import date
 
+
+def miss_blocks(message_text: str, image_url: str):
+    return [
+        {
+            "type": "section",
+            "text": {
+                "type": "mrkdwn",
+                "text": message_text
+            }
+        },
+        {
+            "type": "section",
+            "text": {
+                "type": "mrkdwn",
+                "text": "It's okay, here's a picture of them to remind you <3"
+            }
+        },
+        {
+            "type": "section",
+            "text": {
+                "type": "mrkdwn",
+                "text": image_url
+            }
+        }
+    ]
+
+def help_blocks():
+    return [
+		{
+			"type": "section",
+			"text": {
+				"type": "mrkdwn",
+				"text": "👋 Hi there! I'm DiversaBot. \n\nHere are some things I can do:"
+			}
+		},
+		{
+			"type": "section",
+			"text": {
+				"type": "mrkdwn",
+				"text": "*📸 DiversaSpotting:* Found the DiversaFam in the wild? Upload a picture of them along and tag them in the #diversaspotting channel to secure those delicious points."
+			}
+		},
+		{
+			"type": "section",
+			"text": {
+				"type": "mrkdwn",
+				"text": "*🚩 Flag:* Detected an illegal DiversaSpot? Reply *diversabot flag* in the thread."
+			}
+		},
+		# { TODO: Update as the semester ends.
+		# 	"type": "section",
+		# 	"text": {
+		# 		"type": "mrkdwn",
+		# 		"text": "*🏆 Leaderboard:* If you want to see the top 10 DiversaSpotters, type *diversaspot leaderboard*."
+		# 	}
+		# },
+        {
+			"type": "section",
+			"text": {
+				"type": "mrkdwn",
+				"text": "*🏆 TODO: Team Leaderboard:* If you want how teams are stacking against one another, type *diversaspot team leaderboard*."
+			}
+		},
+		{
+			"type": "section",
+			"text": {
+				"type": "mrkdwn",
+				"text": "*📈 Stats:* If you want to view your own stats, type *diversabot stats*."
+			}
+		},
+		{
+			"type": "section",
+			"text": {
+				"type": "mrkdwn",
+				"text": "*🥺 Miss:* Miss anyone? I'll give you a random photo of them if type *diversabot miss @ThatPerson*."
+			}
+		},
+		{
+			"type": "section",
+			"text": {
+				"type": "mrkdwn",
+				"text": "*📖 Rules:* Need a refresh on DiversaSpotting rules? Type *diversabot rules*."
+			}
+		},
+		{
+			"type": "divider"
+		},
+		{
+			"type": "context",
+			"elements": [
+				{
+					"type": "mrkdwn",
+					"text": "❓ View my commands anytime by typing *diversabot help*!"
+				}
+			]
+		}
+	]
+
+
 def stat_blocks(date: date, name:str, message_text_1: str, message_text_2: str):
     return [
         {
@@ -74,7 +173,7 @@ def leaderboard_blocks(date: date, message_text: str, current_semester: str):
 		}
 	]
 
-def diversabot_rules():
+def rule_blocks():
     return [
         {
             "type": "header",
