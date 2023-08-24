@@ -1,0 +1,3 @@
+.env
+diversavenv/*
+__pycache__/*
