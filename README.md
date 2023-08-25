@@ -6,6 +6,8 @@ Slack management bot for the DiversaSpotting competition.
 2. Run `./setup.sh` to download CockroachDB certificates, create your local python virtual environment, and download dependencies
 3. Test locally, and make a PR :)
 
+Note that the production app is hosted on Heroku, which updates automatically upon any changes to `main`. So please, don't push to main.
+
 ## How to run locally
 *TODO: Add a --test flag to differentiate production and testing environments*
 1. Run the server using either:
