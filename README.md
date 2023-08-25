@@ -10,6 +10,7 @@ Note that the production app is hosted on Heroku, which updates automatically up
 
 ## How to run locally
 *TODO: Add a --test flag to differentiate production and testing environments*
+*TODO: Need to create seperate testing server endpoints for Slack*
 1. Run the server using either:
 	- `python app.py` (if virtual environment is activated)
 	- `./diversavenv/bin/python3.10 app.py` 
