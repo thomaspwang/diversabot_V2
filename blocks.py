@@ -35,7 +35,7 @@ def help_blocks():
 			"type": "section",
 			"text": {
 				"type": "mrkdwn",
-				"text": "👋 Hi there! I'm DiversaBot. \n\nHere are some things I can do:"
+				"text": "👋 Hi there! I'm DiversaBot (Version 2). \n\nHere are some things I can do:"
 			}
 		},
 		{

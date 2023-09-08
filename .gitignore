@@ -1,3 +1,4 @@
 .env
 diversavenv/*
 __pycache__/*
+query.py
