@@ -49,6 +49,7 @@ from utils import (
 )
 
 S3_BUCKET_URL = "https://diversaspots.s3.us-west-1.amazonaws.com/"
+S3_BUCKET_FOLDER_NAME = "fa23"
 DIVERSABOT_SLACK_ID = "U05GDL7EXJ7"
 CURRENT_SEMESTER = "Fall 2023"
 
@@ -123,7 +124,7 @@ def record_spot(message, client, logger):
         image_url = message['files'][0]['url_private']
         path = urlparse(image_url).path
         image_ext = os.path.splitext(path)[1] # e.g .jpg
-        new_s3_file_name = f"{user}_{message_ts}{image_ext}"
+        new_s3_file_name = f"{S3_BUCKET_FOLDER_NAME}/{user}_{message_ts}{image_ext}"
 
         # Extracting image data from Slack URL and uploading it into S3 bucket.
         resp = requests.get(image_url, headers={"Authorization" : f"Bearer {os.environ.get('SLACK_BOT_TOKEN')}"})
