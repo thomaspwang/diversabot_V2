@@ -247,7 +247,7 @@ def post_miss(message, client):
     with Session(engine) as session:
         # Queries a random spot from the DB that has not been flagged and has the tagged user in it.
         random_tagged_spot = session.query(DiversaSpot) \
-                .filter(DiversaSpot.tagged.any(user_id)) \
+                .filter(DiversaSpot.tagged.any(tagged_user)) \
                 .filter(DiversaSpot.flagged == False) \
                 .order_by(sqlalchemy.func.random()) \
                 .first() 
