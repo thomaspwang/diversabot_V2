@@ -1,1 +1,1 @@
-web: curl --create-dirs -o $HOME/.postgresql/root.crt 'https://cockroachlabs.cloud/clusters/1734f6a0-3ba8-49ef-8642-d823b77d7abd/cert' && python3 app.py
+web: python3 app.py
