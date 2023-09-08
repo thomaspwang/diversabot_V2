@@ -244,16 +244,17 @@ def post_miss(message, client):
     random_image_url: str
 
     if get_num_spots_for_user_id(tagged_user, engine) == 0:
-        random_image_url ="Too bad ... they're too elusive and haven't been spotted yet :("
-
-    with Session(engine) as session:
-        # Queries a random image_url from the DB that has not been flagged and has the tagged user in it.
-        random_image_url = session.query(DiversaSpot) \
-                   .filter(DiversaSpot.tagged.any(user_id)) \
-                   .filter(DiversaSpot.flagged == False) \
-                   .order_by(sqlalchemy.func.random()) \
-                   .first() \
-                   .image_url
+        random_image_url ="Too bad ... they're elusive and haven't been spotted yet :("
+    
+    else:
+        with Session(engine) as session:
+            # Queries a random image_url from the DB that has not been flagged and has the tagged user in it.
+            random_image_url = session.query(DiversaSpot) \
+                    .filter(DiversaSpot.tagged.any(user_id)) \
+                    .filter(DiversaSpot.flagged == False) \
+                    .order_by(sqlalchemy.func.random()) \
+                    .first() \
+                    .image_url
 
     message_text = f"Aww ... you miss {get_name_from_user_id(tagged_user, app)}? :pleading_face::point_right::point_left:"
 
