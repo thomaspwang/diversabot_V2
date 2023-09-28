@@ -49,16 +49,16 @@ def help_blocks():
 			"type": "section",
 			"text": {
 				"type": "mrkdwn",
-				"text": "*🚩 Flag:* Detected an illegal DiversaSpot? Reply *diversabot flag* in the thread."
+				"text": "*🚩 Flag:* Detected an illegal DiversaSpot? Reply *diversabot flag* in the thread. Challenge any flags with *diversabot unflag*!"
 			}
 		},
-		# { TODO: Update as the semester ends.
-		# 	"type": "section",
-		# 	"text": {
-		# 		"type": "mrkdwn",
-		# 		"text": "*🏆 Leaderboard:* If you want to see the top 10 DiversaSpotters, type *diversaspot leaderboard*."
-		# 	}
-		# },
+		{
+			"type": "section",
+			"text": {
+				"type": "mrkdwn",
+				"text": "*🏆 Leaderboard:* If you want to see the top 10 DiversaSpotters, type *diversaspot leaderboard*."
+			}
+		},
         {
 			"type": "section",
 			"text": {
