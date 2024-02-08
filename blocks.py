@@ -52,6 +52,13 @@ def help_blocks():
 				"text": "*🚩 Flag:* Detected an illegal DiversaSpot? Reply *diversabot flag* in the thread. Challenge any flags with *diversabot unflag*!"
 			}
 		},
+        {
+			"type": "section",
+			"text": {
+				"type": "mrkdwn",
+				"text": "*🚩 Unflag:* Falsely accused? Reply *diversabot unflag* in the thread."
+			}
+		},
 		{
 			"type": "section",
 			"text": {

@@ -327,7 +327,10 @@ def post_stats(message, client):
 
     with Session(engine) as session:
         times_spotted = session.query(DiversaSpot) \
-                       .filter(DiversaSpot.tagged.any(user_id), DiversaSpot.flagged==False) \
+                       .filter(
+                           DiversaSpot.tagged.any(user_id),
+                           DiversaSpot.semester==SEMESTER_ID,
+                           DiversaSpot.flagged==False) \
                        .count()
         
         if times_spotted == 0:
