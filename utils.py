@@ -16,14 +16,23 @@ from urllib.parse import urlparse
 
 from models import DiversaSpot
 
-def get_num_spots_for_user_id(user_id: str, engine: sqlalchemy.Engine) -> int:
+def get_num_spots_for_user_id(
+    user_id: str,
+    curr_semester: str,
+    engine: sqlalchemy.Engine,
+) -> int:
     """Returns the number of spots a user has"""
     with Session(engine) as session:
         return session.query(DiversaSpot) \
-            .filter_by(spotter=user_id, flagged=False) \
+            .filter_by(spotter=user_id, semester=curr_semester, flagged=False) \
             .count()
     
-def iter_leaderboard(engine: sqlalchemy.Engine, *, limit=None) -> Iterator[tuple[int, str, int]]:
+def iter_leaderboard(
+    curr_semester: str,
+    engine: sqlalchemy.Engine,
+    *,
+    limit=None
+) -> Iterator[tuple[int, str, int]]:
     """Returns an ordered iterator that yields the form (rank, user_id, num_spots)
     
     Ordered by num_spots (and trivially rank) in descending order. Only returns the top `limit` users.
@@ -33,6 +42,7 @@ def iter_leaderboard(engine: sqlalchemy.Engine, *, limit=None) -> Iterator[tuple
     leaderboard: list[tuple[str, int]]
     with Session(engine) as session:
         leaderboard = session.query(DiversaSpot.spotter, sqlalchemy.func.count(DiversaSpot.spotter)) \
+                        .filter(DiversaSpot.semester == curr_semester) \
                         .filter(DiversaSpot.flagged != True) \
                         .group_by(DiversaSpot.spotter) \
                         .order_by(sqlalchemy.func.count(DiversaSpot.spotter).desc()) \
@@ -44,9 +54,9 @@ def iter_leaderboard(engine: sqlalchemy.Engine, *, limit=None) -> Iterator[tuple
         if limit and rank > limit:
             return
 
-def find_rank_by_user_id(user_id: str, engine: sqlalchemy.Engine) -> int:
+def find_rank_by_user_id(user_id: str, curr_semester: str, engine: sqlalchemy.Engine) -> int:
     """Returns the rank of a user by their user_id"""
-    for rank, user_id_, _ in iter_leaderboard(engine):
+    for rank, user_id_, _ in iter_leaderboard(curr_semester, engine):
         if user_id == user_id_:
             return rank
 

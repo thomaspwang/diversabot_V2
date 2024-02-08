@@ -26,6 +26,9 @@ class DiversaSpot(Base):
 
     # Denotes whether or an ot this DiversaSpot is flagged
     flagged = Column(Boolean)
+
+    # The semester in which the spot happened
+    semester = Column(String)
     
     def __str__(self):
         return f"DiversaSpot(timestamp={self.timestamp}, spotter={self.spotter}, tagged={self.tagged}, image_url={self.image_url}, flagged={self.flagged})"

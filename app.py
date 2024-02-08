@@ -49,9 +49,9 @@ from utils import (
 )
 
 S3_BUCKET_URL = "https://diversaspots.s3.us-west-1.amazonaws.com/"
-S3_BUCKET_FOLDER_NAME = "fa23"
+SEMESTER_ID = POSTGRES_SEMESTER_NAME = S3_BUCKET_FOLDER_NAME = "sp24"
 DIVERSABOT_SLACK_ID = "U05GDL7EXJ7"
-CURRENT_SEMESTER = "Fall 2023"
+CURRENT_SEMESTER_STRING = "Spring 2024"
 
 logging.basicConfig(level=logging.INFO)
 
@@ -138,13 +138,14 @@ def record_spot(message, client, logger):
                 spotter=user,
                 tagged=tagged_users,
                 image_url=s3_image_url,
+                semester=SEMESTER_ID,
                 flagged=False,
             )
             with session.begin():
                 session.add(new_diversaspot)
 
         # Sending confirmation message.
-        num_spots = get_num_spots_for_user_id(user, engine)
+        num_spots = get_num_spots_for_user_id(user, SEMESTER_ID, engine)
         reply = f"{random_excited_greeting()} <@{user}>, you now have {num_spots} DiversaSpots!"
 
     client.chat_postMessage(
@@ -247,11 +248,11 @@ def post_leaderboard(message, client):
     channel_id = message["channel"]
 
     message_text = ""
-    for rank, user_id, num_spots in iter_leaderboard(engine, limit=10):
+    for rank, user_id, num_spots in iter_leaderboard(SEMESTER_ID, engine, limit=10):
         name = get_name_from_user_id(user_id, app)
         message_text += f"*#{rank}: {name}* with {num_spots} spots \n"
 
-    blocks = leaderboard_blocks(date.today(), message_text, CURRENT_SEMESTER)
+    blocks = leaderboard_blocks(date.today(), message_text, CURRENT_SEMESTER_STRING)
 
     client.chat_postMessage(
         channel=channel_id,
@@ -318,10 +319,10 @@ def post_stats(message, client):
     message_text_1: str
     message_text_2: str
 
-    if (num_spots := get_num_spots_for_user_id(user_id, engine)) == 0:
+    if (num_spots := get_num_spots_for_user_id(user_id, SEMESTER_ID, engine)) == 0:
         message_text_1 = f"You have not spotted anyone yet :( Go get out there!"
     else:
-        rank = find_rank_by_user_id(user_id, engine)
+        rank = find_rank_by_user_id(user_id, SEMESTER_ID, engine)
         message_text_1 = f"You have spotted {num_spots} people and are currently ranked #{rank} on the leaderboard!"
 
     with Session(engine) as session:
