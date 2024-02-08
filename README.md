@@ -2,7 +2,7 @@
 Slack management bot for the DiversaSpotting competition.
 
 ## How to contribute
-1. Reach out to Thomas Wang or Clara Tu for `.env` variables and to add collaborators on the Slack API console
+1. Reach out to Thomas Wang  for `.env` variables and to add collaborators on the Slack API console
 2. Run `./setup.sh` to download CockroachDB certificates, create your local python virtual environment, and download dependencies
 3. Test locally, and make a PR :)
 
