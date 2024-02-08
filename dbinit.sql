@@ -6,5 +6,6 @@ CREATE TABLE diversaspots (
     spotter VARCHAR,
     tagged TEXT[],
     image_url VARCHAR,
+    semester VARCHAR NULL,
     flagged BOOLEAN
 );
