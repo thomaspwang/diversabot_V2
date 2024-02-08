@@ -36,6 +36,7 @@ Note that the production app is hosted on Heroku, which updates automatically up
 - diversabot chum
 - diversabot recap
 - diversabot team-leaderboard
+- diversabot ultimate-leaderboard
 
 
 ## Major Updates in V2:
