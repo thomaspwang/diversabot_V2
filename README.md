@@ -30,12 +30,13 @@ Note that the production app is hosted on Heroku, which updates automatically up
 - diversabot stats
 - diversabot rules
 - diversabot flag
+- diversabot unflag
 
 ## Features up next:
 - diversabot chum
-- diversabot unflag
 - diversabot recap
 - diversabot team-leaderboard
+- diversabot ultimate-leaderboard
 
 
 ## Major Updates in V2:
