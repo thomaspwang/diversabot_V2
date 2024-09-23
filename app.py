@@ -49,9 +49,9 @@ from utils import (
 )
 
 S3_BUCKET_URL = "https://diversaspots.s3.us-west-1.amazonaws.com/"
-SEMESTER_ID = POSTGRES_SEMESTER_NAME = S3_BUCKET_FOLDER_NAME = "sp24"
+SEMESTER_ID = POSTGRES_SEMESTER_NAME = S3_BUCKET_FOLDER_NAME = "fa24"
 DIVERSABOT_SLACK_ID = "U05GDL7EXJ7"
-CURRENT_SEMESTER_STRING = "Spring 2024"
+CURRENT_SEMESTER_STRING = "Fall 2024"
 
 logging.basicConfig(level=logging.INFO)
 
